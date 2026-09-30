@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image Quality Metrics</title>
+    <!-- <link rel="stylesheet" type="text/css" href="parastyle.css"> -->
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+      }
+      th, td {
+        text-align: left;
+        padding: 8px;
+        border: 1px solid #ddd;
+        text-transform: capitalize;
+
+      }
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+
+      form {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    input[type="file"]{
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 3px;
+      border: none;
+      background-color: #fff;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+    input[type="submit"] {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      border-radius: 3px;
+      border: none;
+      background-color: #4CAF50;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    h1,h2 {
+      font-size: 36px;
+      font-weight: bold;
+      text-align: center;
+      color: black;
+      text-shadow: 2px 2px #ccc;
+      margin-top: 50px;
+      margin-bottom: 30px;
+    }
+    .container{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 50px;
+    }
+    label {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    img {
+
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    .container tr td{
+      font-size: 30px;
+      font-weight: bold;
+      text-align: center;
+      color: black;
+      margin-top: 50px;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+    }
+    button {
+    display: block;
+      width: 100%;
+      padding: 10px;
+      border-radius: 3px;
+      border: none;
+      background-color: #4CAF50;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #3e8e41; /* Change background color on hover */
+  }
+  .my-link {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      border-radius: 3px;
+      border: none;
+      background-color: #4CAF50;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      font-family: Arial, sans-serif;
+		}
+    .my-link:hover {
+    background-color: #3e8e41; /* Change background color on hover */
+  }
+    </style>
+
+
+
+  </head>
+  <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endwith %}
+
+    <h1>Image Quality Metrics</h1>
+
+    <form action="{{ url_for('getSimilarity') }}" method="post" enctype="multipart/form-data">
+      <div>
+        <label for="image1">Reference image:</label>
+        <input type="file" name="image1" id="image1">
+      </div>
+      <div>
+        <label for="image2">Test image:</label>
+        <input type="file" name="image2" id="image2">
+      </div>
+      <div>
+        <input type="submit" value="Upload">
+      </div>
+    </form>
+
+    {% if img1 and img2 %}
+      <h2>Fusion Evaluation Parameters</h2>
+      <table id="myTable1">
+        <tr>
+          <th>Metric</th>
+          <th>Value</th>
+        </tr>
+        <tr>
+          <td>Mean-Square Error (MSE)</td>
+          <td>{{ mse_val }}</td>
+        </tr>
+        <tr>
+          <td>Root Mean-Square Error (MSE)</td>
+          <td>{{ rmse_val }}</td>
+        </tr>
+        <tr>
+          <td>peak signal-to-noise ratio(PSNR)</td>
+          <td>{{ psnr_val }}</td>
+        </tr>
+        <tr>
+          <td>The Structural Similarity Index (SSIM)</td>
+          <td>{{ ssim_val }}</td>
+        </tr>
+        <tr>
+          <td>
+            Universal image quality index (UQI)</td>
+          <td>{{ uqi_val }}</td>
+        </tr>
+        <tr>
+          <td>multi-scale structural similarity index for motion detection (MS-SSIM)</td>
+          <td>{{ msssim_val }}</td>
+        </tr>
+        <tr>
+          <td>Relative Dimensionless Global Error (ERGAS)</td>
+          <td>{{ ergas_val }}</td>
+        </tr>
+        <tr>
+          <td>
+            Self-similarity Context (SSC)</td>
+          <td>{{ scc_val }}</td>
+        </tr>
+        <tr>
+          <td>Relative Average Spectral Error(RASE)</td>
+          <td>{{ rase_val }}</td>
+        </tr>
+        <tr>
+          <td>Spectral Angle Mapper (SAM)</td>
+          <td>{{ sam_val }}</td>
+        </tr>
+        <tr>
+          <td>Visual information fidelity (VIF)</td>
+          <td>{{ vifp_val }}</td>
+        </tr>
+        <tr>
+          <td>entropy</td>
+          <td>{{ entropy }}</td>
+        </tr>
+        <tr>
+          <td>cross entropy</td>
+          <td>{{ cross_entropy }}</td>
+        </tr>
+        <tr>
+          <td>average gradient</td>
+          <td>{{ ag }}</td>
+        </tr>
+        <tr>
+          <td>mean</td>
+          <td>{{ mean }}</td>
+        </tr>
+        <tr>
+          <td>Standard Deviation</td>
+          <td>{{ sd }}</td>
+        </tr>
+      </table>
+      <!-- analysis start -->
+<!--      <h2>Analysis</h2>-->
+<!--      <table id="myTable2">-->
+<!--        <tr>-->
+<!--          <th>Metric</th>-->
+<!--          <th>Value</th>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td>Execution Time(s)</td>-->
+<!--          <td>{{ et }}</td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td>Accuracy(%)</td>-->
+<!--          <td>{{ acc }}</td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td>Loss(%)</td>-->
+<!--          <td>{{ loss }}</td>-->
+<!--        </tr>-->
+<!--      </table>-->
+      <!-- analysis end -->
+      <div class="section">
+        <button onclick="downloadTable()">Download Data Into Excel Sheet</button>
+      </div>
+      <h2>Image Display</h2>
+
+      <div class="container">
+          <tr>
+            <td> <h4>Reference image:</h4></td>
+        <td><img src="data:image/jpeg;base64,{{ img1}}" width="400"></td>
+
+          </tr>
+          <tr>
+            <td><h4>Test image:</h4></td>
+        <td><img src="data:image/jpeg;base64,{{ img2 }}" width="400"></td>
+
+          </tr>
+
+      </div>
+      <!-- new code start -->
+      <br> <br>
+
+    {% endif %}
+    <!-- js start -->
+    <script>
+      function downloadTable() {
+        // Get the table element
+        var table = document.getElementById("myTable1");
+
+        // Convert the table to a CSV string
+        var csv = convertToCsv(table);
+
+        // Create a blob object from the CSV string
+        var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+
+        // Create a URL object from the blob
+        var url = URL.createObjectURL(blob);
+
+        // Create a link element with the URL as its href attribute
+        var link = document.createElement("a");
+        link.href = url;
+        link.download = "table.csv";
+
+        // Add the link to the document and click it to download the file
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      function convertToCsv(table) {
+        // Convert the table to a CSV string
+        var csv = "";
+        var rows = table.getElementsByTagName("tr");
+
+        // Loop through the rows and add the cells to the CSV string
+        for (var i = 0; i < rows.length; i++) {
+          var cells = rows[i].getElementsByTagName("td");
+
+          for (var j = 0; j < cells.length; j++) {
+            csv += cells[j].textContent + ",";
+          }
+
+          csv = csv.slice(0, -1); // Remove the last comma from the row
+          csv += "\n";
+        }
+
+        return csv;
+      }
+    </script>
+    <!-- js end -->
+  </body>
+</html>
+
+
+
+
+
+
+
+
+

@@ -14,7 +14,7 @@ div.image-class{
 	background-position: center;
 	background-repeat: no-repeat;
     z-index: 0;
-    opacity: 0.6;
+
 }
 div.landing-content{
     margin:75px auto;
@@ -32,5 +32,5 @@ div.landing-content p{
     font-weight: 600;
     padding: 30px;
     font-size: 20px;
-    color:#00011a;
+    background-color: rgba(0,0,0,0.5);
 }

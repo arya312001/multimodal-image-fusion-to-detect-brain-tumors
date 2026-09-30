@@ -4,7 +4,7 @@ Images are the largest source of data in healthcare and, at the same time, one o
 
 Diagnostic tools include **Computed tomography (CT)** and **Magnetic resonance imaging (MRI)** and thus these are the two modalities that we will consider for Image Fusion Process. 
 
-We aim to approach a three step process:
+Three-step process:
 1. Image Registeration
 2. Image Fusion
 3. Image Segmentation
@@ -15,15 +15,6 @@ We aim to approach a three step process:
 Image registration is the process of transforming images into a common coordinate system so corresponding pixels represent homologous biological points. Registration can be used to obtain an anatomically normalized reference frame in which brain regions from different patients can be compared.
 #### Landmark-Based Registration 
 Image landmark registration is a simple process where a number of points (landmarks) are defined on the same locations in two volumes. The landmarks are then matched by an algorithm, and the volumes are thus registered. The CT scan image is taken as the reference (fixed) image and the MRI scan image is aligned as per the points selected by the user.
-
-1. **Python Notebook** -
-Navigate to `python scripts/Image Registration Process.ipynb` and select the CT and MRI Images.
-2. **GUI** -
-Setup Flask and install dependencies and run:
-`python app.py`
-Select the appropriate CT and MRI Images. The registered MRI Image gets saved in `static/mri_registered.jpg`
-
-***
 
 ### Image Fusion
 
@@ -43,39 +34,3 @@ Wavelet transform provides high frequency resolution at low frequencies and high
 2. Apply wavelet decomposition on MR image to generate approximate coefficient LL2 and three detail coefficients: LH2(horizontal), LV2(vertical), LD2(diagonal)
 3. Apply fusion based on VGG-19 network on four pairs: (LL1 and LL2), (LH1 and LH2), (LV1 and LV2) and (LD1 and LD2), to generate LL band, LH band, LV band and LD band.
 4. Apply inverse wavelet transform on the four bands generated in step 3 to obtain fused image.
-
-#### Code
-1. **Python Notebook** -
-Navigate to `python scripts/Transfer_Learning.ipynb` and provide paths to registered set of MRI and CT Images.
-2. **GUI** -
-Setup Flask and install dependencies and run:
-`python app.py`
-In continuation to the above GUI approach the fused image gets saved in `static/fusion.jpg`
-
-***
-
-### Image Segmentation
-
-#### Watershed Algorithm
-Watershed segmentation is a region-based technique that utilizes image morphology. It requires selection of at least one marker (“seed” point) interior to each object of the image, including the background as a separate object. The markers are chosen by an operator or are provided by an automatic procedure that takes into account the application-specific knowledge of the objects. Once the objects are marked, they can be grown using a morphological watershed transformation
-
-#### Code
-1. **Python Notebook** -
-Navigate to `python scripts/Image Segmentation.ipynb` and provide paths to registered set of MRI and CT Images.
-2. **GUI** -
-Setup Flask and install dependencies and run:
-`python app.py`
-In continuation to the above GUI approach the fused image gets saved in `static/segmented.jpg`
-
-***
-
-#### Desktop Application
-All the above functionalities have also been implemented on a [Desktop Application](https://github.com/beccaboo-31/Multimodal-Image-Fusion-Desktop-App/) using Tkinter.
-
-***
-#### Contributors
-* [Aayush Parekh](https://github.com/aparekh7)
-* [Neha Patil](https://github.com/Nehaa03)
-* [Rebecca Biju](https://github.com/beccaboo-31)
-* [Ashna Shah](https://github.com/ashna111)
-

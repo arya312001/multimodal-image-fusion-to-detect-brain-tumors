@@ -1,9 +1,10 @@
+import base64
 import os
 from datetime import datetime
 from flask import Flask, render_template, request, url_for
 import numpy as np 
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm 
+import matplotlib.cm as cm
 import cv2
 import imageio
 import scipy.ndimage as ndi
@@ -11,11 +12,12 @@ import argparse
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from sewar import mse, rmse, psnr, uqi, ssim, ergas, scc, rase, sam, msssim, vifp
 from torchvision.models.vgg import vgg19
 import pywt
 import pywt.data
 from skimage.morphology import extrema
-from skimage.morphology import watershed as skwater
+from skimage.segmentation import watershed as skwater
 
 app = Flask(__name__)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -310,6 +312,7 @@ def fusion():
 
     # Wavelet transform of image, and plot approximation and details
     coeffs2 = pywt.dwt2(mri_image, 'haar')
+    # coeffs2 = pywt.dwt2(mri_image, 'db1')
     LL, (LH, HL, HH) = coeffs2
     for i, a in enumerate([LL, LH, HL, HH]):
         path='static/mri_'+str(i)+'.jpg'
@@ -442,6 +445,52 @@ def segmentation():
     cv2.imwrite("static/segmented.jpg", im1)
 
     return render_template("segmentation.html")
+
+@app.route('/file_similarity', methods=['POST'])
+def fileSimilarity():
+        return render_template('Similarity.html')
+
+@app.route('/getSimilarity', methods=['POST'])
+def getSimilarity():
+        img1_file = request.files['image1']
+        img2_file = request.files['image2']
+        # Read the uploaded images as NumPy arrays
+        img1_bytes = img1_file.read()
+        img2_bytes = img2_file.read()
+        img1_arr = cv2.imdecode(np.frombuffer(img1_bytes, np.uint8), cv2.IMREAD_COLOR)
+        img2_arr = cv2.imdecode(np.frombuffer(img2_bytes, np.uint8), cv2.IMREAD_COLOR)
+        # Compute image quality metrics
+        mse_val = mse(img1_arr, img2_arr)
+        rmse_val = rmse(img1_arr, img2_arr)
+        psnr_val = psnr(img1_arr, img2_arr)
+        ssim_val = ssim(img1_arr, img2_arr)
+        uqi_val = uqi(img1_arr, img2_arr)
+        msssim_val = msssim(img1_arr, img2_arr)
+        ergas_val = ergas(img1_arr, img2_arr)
+        scc_val = scc(img1_arr, img2_arr)
+        rase_val = rase(img1_arr, img2_arr)
+        sam_val = sam(img1_arr, img2_arr)
+        vifp_val = vifp(img1_arr, img2_arr)
+        # Pass the original images and computed metrics to the template
+        print(img1_bytes)
+        print(img2_bytes)
+        img1_data = base64.b64encode(img1_bytes).decode()
+        img2_data = base64.b64encode(img2_bytes).decode()
+        return render_template('Similarity.html',
+            img1=img1_data,
+            img2=img2_data,
+            mse_val=mse_val,
+            rmse_val=rmse_val,
+            psnr_val=psnr_val,
+            ssim_val = ssim_val,
+            uqi_val = uqi_val,
+            msssim_val = msssim_val,
+            ergas_val = ergas_val,
+            scc_val = scc_val,
+            rase_val = rase_val,
+            sam_val = sam_val,
+            vifp_val = vifp_val)
+
 
 
 @app.after_request

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>BE Project</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/registered.css') }}">
+    <style>
+        select {
+        width: 200px;
+        height: 30px;
+        padding: 5px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        background-color: #fff;
+        }
+        option {
+        font-size: 16px;
+        background-color: #fff;
+        color: #333;
+        }
+        .dropdown-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .com-type {
+        margin-right: 10px; /* Adjust the margin as needed */
+    }
+    .fusetp {
+        margin-right: 100px; /* Adjust the margin as needed */
+    }
+
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">The Process Of The User Selecting An Option</h1>
+            <p class="lead">
+                The process of selecting an appropriate wavelet family and fuse combination for a specific purpose.
+                This involves carefully considering various options and making a decision based on the specific
+                requirements and objectives. The selection process includes evaluating different wavelet families,
+                assessing their properties and characteristics, and determining which one would best suit the desired
+                outcome. Additionally, the process involves considering different fusion techniques and combinations,
+                analyzing their effectiveness in achieving the desired
+                result, and ultimately choosing the most suitable option that optimally combines the wavelet family
+                and fuse combination.
+            </p>
+        </div>
+
+<!--        update start-->
+        <form action="{{ url_for('fusion') }}" method="post" enctype="multipart/form-data">
+    <div class="dropdown-container">
+        <div class="fusetp"> Please Select The Fusion Type
+<!--            <label for="options">Choose an option:</label>-->
+<!--            <select id="options" name="options">-->
+            <select id="options" name="options">
+                <option value="haar">Haar</option>
+                <option value="db">Daubechies</option>
+                <option value="sym">Symlets</option>
+                <option value="coif">Coiflets</option>
+            </select>
+        </div>
+            <!--        new dropdown list start-->
+            <div class="com-type"> Please Select The Fusion Combination
+<!--            <label for="options">Choose an option:</label>-->
+<!--            <select id="options" name="options">-->
+            <select id="com-options" name="com-options">
+                <option value="maxmax">max-max</option>
+                <option value="maxmin">max-min</option>
+                <option value="maxmean">max-mean</option>
+                <option value="minmax">min-max</option>
+                <option value="minmin">min-min</option>
+                <option value="minmean">min-mean</option>
+                <option value="meanmax">mean-max</option>
+                <option value="meanmin">mean-min</option>
+                <option value="meanmean">mean-mean</option>
+            </select>
+        </div>
+    </div>
+            <!--        new dropdown list end-->
+<!--        update end-->
+
+
+        <div class="row">
+            <div class="col-lg-6 col-md-12 col-sm-12 content">
+                <h2>Registered MRI Image</h2>
+                <center>
+                    <img src="{{ url_for('static',filename='mri_registered.jpg') }}" id="mri" alt="MRI" class="mri"
+                        style="border:2px solid #87857f;padding:15px; border-radius:10px;">
+                </center>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 content">
+                <h2>Registered CT Image</h2>
+                <center>
+                    <img src="{{ url_for('static',filename='ct.jpg') }}" id="ct" alt="CT" class="ct"
+                        style="border:2px solid #87857f;padding:15px; border-radius:10px;">
+                </center>
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom: 40px;">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <center>
+<!--                    <form action="{{ url_for('fusion') }}" method="POST">-->
+                        <input type="submit" value="View The Fused Image" class="btn btn-primary">
+<!--                    </form>-->
+                </center>
+            </div>
+        </div>
+
+        </form>
+
+    </div>
+
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

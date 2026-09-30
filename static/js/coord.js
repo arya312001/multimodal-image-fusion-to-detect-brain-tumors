@@ -87,3 +87,14 @@ function sendParameters() {
         location.href = '/registerimage';
     });
 }
+
+
+function sendImages() {
+    console.log("put method")
+
+//    $.post('/file_similarity', {
+//        mriCoord: JSON.stringify(mriCoord),
+//        ctCoord: JSON.stringify(ctCoord),
+//    });
+    window.location.href = "http://127.0.0.1:5000/file_similarity";
+}

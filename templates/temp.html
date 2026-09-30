@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image Quality Metrics</title>
+  </head>
+  <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endwith %}
+
+    <h1>Image Quality Metrics</h1>
+
+    <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+      <div>
+        <label for="image1">Reference image:</label>
+        <input type="file" name="image1" id="image1">
+      </div>
+      <div>
+        <label for="image2">Test image:</label>
+        <input type="file" name="image2" id="image2">
+      </div>
+      <div>
+        <input type="submit" value="Upload">
+      </div>
+    </form>
+
+    {% if img1 and img2 %}
+      <h2>Results:</h2>
+      <table>
+        <tr>
+          <th>Metric</th>
+          <th>Value</th>
+        </tr>
+        <tr>
+          <td>MSE</td>
+          <td>{{ mse_val }}</td>
+        </tr>
+        <tr>
+          <td>RMSE</td>
+          <td>{{ rmse_val }}</td>
+        </tr>
+        <tr>
+          <td>PSNR</td>
+          <td>{{ psnr_val }}</td>
+        </tr>
+        <tr>
+          <td>ssim</td>
+          <td>{{ ssim_val }}</td>
+        </tr>
+        <tr>
+          <td>uqi</td>
+          <td>{{ uqi_val }}</td>
+        </tr>
+        <tr>
+          <td>msssim</td>
+          <td>{{ msssim_val }}</td>
+        </tr>
+        <tr>
+          <td>ergas</td>
+          <td>{{ ergas_val }}</td>
+        </tr>
+        <tr>
+          <td>scc</td>
+          <td>{{ scc_val }}</td>
+        </tr>
+        <tr>
+          <td>rase</td>
+          <td>{{ rase_val }}</td>
+        </tr>
+        <tr>
+          <td>sam</td>
+          <td>{{ sam_val }}</td>
+        </tr>
+        <tr>
+          <td>vifp</td>
+          <td>{{ vifp_val }}</td>
+        </tr>
+      </table>
+
+      <h2>Images:</h2>
+      <table>
+        <tr>
+          <td>Reference image:</td>
+		  <td><img src="data:image/jpeg;base64,{{ img1}}" width="400"></td>
+
+        </tr>
+        <tr>
+          <td>Test image:</td>
+		  <td><img src="data:image/jpeg;base64,{{ img2 }}" width="400"></td>
+
+        </tr>
+      </table>
+    {% endif %}
+  </body>
+</html>
