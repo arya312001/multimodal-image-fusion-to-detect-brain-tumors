@@ -5,7 +5,7 @@ Images are the largest source of data in healthcare and, at the same time, one o
 Diagnostic tools include **Computed tomography (CT)** and **Magnetic resonance imaging (MRI)** and thus these are the two modalities that we will consider for Image Fusion Process. 
 
 Three-step process:
-1. Image Registeration
+1. Image Registration
 2. Image Fusion
 3. Image Segmentation
 
